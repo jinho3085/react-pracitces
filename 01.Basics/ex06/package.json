@@ -1,7 +1,7 @@
 {
-  "name": "ex04",
+  "name": "ex06",
   "version": "1.0.0",
-  "description": "",
+  "description": "React API 기반에서 React JSX 기반의 Application으로 리팩토링 하기",
   "main": "index.js",
   "scripts": {
     "start": "npx webpack serve --progress",
@@ -11,6 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "sass": "^1.93.2",
     "sass-loader": "^16.0.5",
@@ -18,5 +22,9 @@
     "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }
