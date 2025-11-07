@@ -1,10 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {
     mode: "development",
     entry: path.resolve('src/index.js'),
     output: {
-        path: path.resolve('public'),
+        path: path.resolve('../backend/src/main/resources'),
         filename: 'assets/js/main.js',
         assetModuleFilename: 'assets/images/[hash][ext]'
     },
@@ -28,7 +30,13 @@ module.exports = {
             test: /\.(png|gif|jp?eg|svg|ico|tif?f|bmp)/i,
             type: 'asset/resource'            
         }],
-    },     
+    },
+    plugins: [
+        new CaseSensitivePathsPlugin(),
+        new webpack.DefinePlugin({
+            'API_HOST': JSON.stringify(process.env.NODE_ENV === 'development' ? '/item' : 'http://192.168.0.178:8080/api')
+        })
+    ],         
     devServer: {
         host: '0.0.0.0',
         port: 9090,
@@ -41,7 +49,7 @@ module.exports = {
         hot: false,
         historyApiFallback: true,
         proxy:[{
-            context: ['/item'],
+            context: ['/item', '/assets'],
             target: 'http://localhost:8080'
         }]
     }        
