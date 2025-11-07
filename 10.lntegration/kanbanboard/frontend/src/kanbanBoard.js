@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import CardList from './CardList.js';
-import data from './assets/json/data.js';
 
 const StyledDiv = styled.div`
     white-space: nowrap;
@@ -10,20 +10,40 @@ const StyledDiv = styled.div`
 `;
 
 const KanbanBoard = () => {
+    const [cards, setCards] = useState([]);
+
+    const fetchCrads = async () => {
+        try {
+            const response = await axios.get('/api/card');
+            const jsonResult = response.data
+            if (jsonResult.result !== 'success') {
+                throw new Error(`${jsonResult.result} ${jsonResult.message}`);
+            }
+
+            setCards(jsonResult.data);
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchCrads();
+    }, []);
+    
     return (
-            <StyledDiv className={'KanbanBoard'}>
+            <StyledDiv className={'Kanban_Board'}>
                 <CardList 
                     key={'To Do'}
                     title={'To Do'}
-                    cards={data.filter(card => card.status === 'ToDo')} />
+                    cards={cards.filter(card => card.status === 'ToDo')} />
                 <CardList
                     key={'Doing'}
                     title={'Doing'}
-                    cards={data.filter(card => card.status === 'Doing')} />
+                    cards={cards.filter(card => card.status === 'Doing')} />
                 <CardList
                     key={'Done'}
                     title={'Done'}
-                    cards={data.filter(card => card.status === 'Done')} />
+                    cards={cards.filter(card => card.status === 'Done')} />
             </StyledDiv>
     );
 };

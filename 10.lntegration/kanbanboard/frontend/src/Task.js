@@ -1,24 +1,25 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {_Task, Task_Remove} from './assets/scss/Task.scss';
 
-const Task = ({no, name, done}) => {
-    const [doneChecked, setDoneChecked] = useState(done);
-
+const Task = ({no, name, done, deleteTask, changeTaskDone}) => {
     return (
         <li className={_Task}>
             <input
                 type='checkbox'
-                checked={doneChecked} 
-                onChange={()=>{
-                    // ajax 
-                    setDoneChecked(!doneChecked);
-                }}/>
+                checked={done === 'Y'} 
+                onChange={e => {
+                    changeTaskDone(no, e.target.checked ? 'Y' : 'N');
+                }} />
             {' '}    
             {name}     
             {' '}    
             <a
                 href='#'
-                className={Task_Remove} />
+                className={Task_Remove}
+                onClick={e => {
+                    e.preventDefault();
+                    deleteTask(no);
+                }}/>
         </li>
     );
 };

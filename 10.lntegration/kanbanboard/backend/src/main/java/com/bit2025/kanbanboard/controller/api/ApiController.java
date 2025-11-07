@@ -1,11 +1,11 @@
 package com.bit2025.kanbanboard.controller.api;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,12 +54,21 @@ public class ApiController {
 	}
 
 	@PutMapping("/task/{no}")
-	public ResponseEntity<JsonResult<Map<?, ?>>> updateTask(@PathVariable Long no, String done) {
-		taskRepository.updateDone(no, done);
+	public ResponseEntity<JsonResult<Boolean>> updateTask(@PathVariable Long no, String done) {
+		Boolean result = taskRepository.updateDone(no, done);
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(JsonResult.success(Map.of("no", no, "done", done)));		
+				.body(JsonResult.success(result));		
 	}
 
+	@DeleteMapping("/task/{no}")
+	public ResponseEntity<JsonResult<Boolean>> deleteTask(@PathVariable Long no) {
+		Boolean result = taskRepository.dateleByNo(no);
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(JsonResult.success(result));		
+	}
+	
 }
